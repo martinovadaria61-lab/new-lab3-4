@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Адміністративна панель — Товари (Варіант 9)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2aa8a8;
+      --primary-hover: #228b8b;
+      --primary-light: #e6f6f5;
+      --primary-subtle: #d0f0ee;
+      --accent: #177a7a;
+      
+      --bg-page: #f2f9f9;
+      --bg-card: #ffffff;
+      
+      --text-main: #233535;
+      --text-muted: #5e7777;
+      --border-color: #d6e8e7;
+      
+      --danger: #e05d5d;
+      --danger-hover: #c44747;
+      --danger-light: #fdf2f2;
+      
+      --gray-btn: #8ca3a3;
+      --gray-btn-hover: #738b8b;
+      
+      --shadow-sm: 0 4px 12px rgba(42, 168, 168, 0.08);
+      --shadow-md: 0 8px 24px rgba(42, 168, 168, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #f2f9f9 0%, #e3f4f3 100%);
+      color: var(--text-main);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    /* Форма */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      outline: none;
+      background-color: #fafdfd;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(42, 168, 168, 0.15);
+    }
+
+    input:disabled {
+      background-color: #f0f4f4;
+      color: #92a4a4;
+      cursor: not-allowed;
+    }
+
+    .form-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* Кнопки */
+    button {
+      font-family: inherit;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(42, 168, 168, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: var(--gray-btn);
+      color: #ffffff;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--gray-btn-hover);
+    }
+
+    .btn-danger {
+      background-color: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid rgba(224, 93, 93, 0.3);
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .btn-danger:hover {
+      background-color: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-edit {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--primary-subtle);
+      padding: 6px 12px;
+      font-size: 13px;
+      margin-right: 6px;
+    }
+
+    .btn-edit:hover {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Помилки */
+    .error-msg {
+      background-color: var(--danger-light);
+      color: var(--danger);
+      border-left: 4px solid var(--danger);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 14px;
+      font-weight: 500;
+      display: none;
+    }
+
+    /* Блок сортування */
+    .sort-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 12px 18px;
+      background: var(--primary-light);
+      border-radius: 12px;
+    }
+
+    .sort-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 4px;
+    }
+
+    .btn-sort {
+      background: #ffffff;
+      color: var(--accent);
+      border: 1px solid var(--border-color);
+      padding: 7px 13px;
+      font-size: 13px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .btn-sort:hover {
+      background: var(--primary-subtle);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    /* Таблиця */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f7fbfb;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 14px 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1.5px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 18px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #fafdff;
+    }
+
+    /* Бейджі статусу Sklad */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-in-stock {
+      background-color: #e4f7ea;
+      color: #1a7f37;
+    }
+
+    .badge-out-stock {
+      background-color: #fbeeed;
+      color: #d1242f;
+    }
+
+    .badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge-in-stock::before {
+      background-color: #1a7f37;
+    }
+
+    .badge-out-stock::before {
+      background-color: #d1242f;
+    }
+
+    .price-text {
+      font-weight: 600;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Адміністративна панель</h1>
+      <p>Керування каталогом товарів</p>
+    </header>
+
+    <!-- Секція форми додавання / редагування -->
+    <div class="card">
+      <div class="card-title" id="form-title">Додати новий товар</div>
+      <form id="product-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="prod-id">ID товару</label>
+            <input type="text" id="prod-id" required placeholder="Наприклад: P-101">
+          </div>
+          <div class="form-group">
+            <label for="prod-name">Назва товару</label>
+            <input type="text" id="prod-name" required placeholder="Назва товару">
+          </div>
+          <div class="form-group">
+            <label for="prod-price">Ціна (₴)</label>
+            <input type="number" id="prod-price" step="0.01" required placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label for="prod-date">Дата додавання</label>
+            <input type="date" id="prod-date" required>
+          </div>
+          <div class="form-group">
+            <label for="prod-sklad">Наявність на складі</label>
+            <select id="prod-sklad">
+              <option value="1">В наявності</option>
+              <option value="0">Немає на складі</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="error-box" class="error-msg"></div>
+
+        <div class="form-actions">
+          <button type="submit" id="save-btn" class="btn-primary">
+            <span>Зберегти товар</span>
+          </button>
+          <button type="button" id="cancel-edit-btn" class="btn-secondary" style="display: none;">
+            <span>Скасувати</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Таблиця товарів та сортування -->
+    <div class="card">
+      <div class="card-title">Список товарів</div>
+      
+      <div class="sort-section">
+        <span class="sort-label">Сортування:</span>
+        <button type="button" id="sort-date-asc" class="btn-sort">Дата (старіші)</button>
+        <button type="button" id="sort-date-desc" class="btn-sort">Дата (новіші)</button>
+        <button type="button" id="sort-sklad-asc" class="btn-sort">Склад (Немає в наявності)</button>
+        <button type="button" id="sort-sklad-desc" class="btn-sort">Склад (Є в наявності)</button>
+      </div>
+
+      <div class="table-responsive">
+        <table id="products-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Назва</th>
+              <th>Ціна</th>
+              <th>Дата додавання</th>
+              <th>Склад</th>
+              <th style="text-align: right;">Дії</th>
+            </tr>
+          </thead>
+          <tbody id="products-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let products = JSON.parse(localStorage.getItem('products_v9')) || [
+      { id: "P-01", name: "Клавіатура мембранна", price: 850, dateAdded: "2026-03-10", sklad: 1 },
+      { id: "P-02", name: "Оптична миша", price: 450, dateAdded: "2026-03-05", sklad: 0 },
+      { id: "P-03", name: "Монітор IPS 24\"", price: 6200, dateAdded: "2026-03-15", sklad: 1 }
+    ];
+
+    let editMode = false;
+    let editingProductId = null;
+
+    const form = document.getElementById('product-form');
+    const prodId = document.getElementById('prod-id');
+    const prodName = document.getElementById('prod-name');
+    const prodPrice = document.getElementById('prod-price');
+    const prodDate = document.getElementById('prod-date');
+    const prodSklad = document.getElementById('prod-sklad');
+    const errorBox = document.getElementById('error-box');
+    const tableBody = document.getElementById('products-body');
+    const formTitle = document.getElementById('form-title');
+    const cancelBtn = document.getElementById('cancel-edit-btn');
+
+    function showError(msg) {
+      errorBox.textContent = msg;
+      errorBox.style.display = 'block';
+    }
+
+    function clearError() {
+      errorBox.textContent = '';
+      errorBox.style.display = 'none';
+    }
+
+    function renderTable(data = products) {
+      tableBody.innerHTML = '';
+      if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">Товарів не знайдено</td></tr>';
+        return;
+      }
+      data.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${p.id}</strong></td>
+          <td>${p.name}</td>
+          <td class="price-text">${p.price.toFixed(2)} ₴</td>
+          <td>${p.dateAdded}</td>
+          <td>
+            ${p.sklad === 1 
+              ? '<span class="badge badge-in-stock">В наявності (1)</span>' 
+              : '<span class="badge badge-out-stock">Немає (0)</span>'}
+          </td>
+          <td style="text-align: right;">
+            <button class="btn-edit" onclick="startEdit('${p.id}')">Редагувати</button>
+            <button class="btn-danger" onclick="deleteProduct('${p.id}')">Видалити</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+      localStorage.setItem('products_v9', JSON.stringify(products));
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearError();
+
+      const idVal = prodId.value.trim();
+      const nameVal = prodName.value.trim();
+      const priceVal = parseFloat(prodPrice.value);
+      const dateVal = prodDate.value;
+      const skladVal = parseInt(prodSklad.value, 10);
+
+      // Валідація
+      if (!idVal || !nameVal || !dateVal || isNaN(priceVal)) {
+        showError("Помилка: Усі обов'язкові поля повинні бути заповнені.");
+        return;
+      }
+
+      if (priceVal < 0) {
+        showError("Помилка: Ціна не може бути від'ємною.");
+        return;
+      }
+
+      if (!editMode) {
+        const idExists = products.some(p => p.id.toLowerCase() === idVal.toLowerCase());
+        if (idExists) {
+          showError(`Помилка: Товар з ID "${idVal}" вже існує. ID має бути унікальним.`);
+          return;
+        }
+        products.push({ id: idVal, name: nameVal, price: priceVal, dateAdded: dateVal, sklad: skladVal });
+      } else {
+        const prod = products.find(p => p.id === editingProductId);
+        if (prod) {
+          prod.name = nameVal;
+          prod.price = priceVal;
+          prod.dateAdded = dateVal;
+          prod.sklad = skladVal;
+        }
+        resetForm();
+      }
+
+      renderTable();
+      if (!editMode) form.reset();
+    });
+
+    window.startEdit = function(id) {
+      clearError();
+      const prod = products.find(p => p.id === id);
+      if (!prod) return;
+      editMode = true;
+      editingProductId = id;
+      prodId.value = prod.id;
+      prodId.disabled = true;
+      prodName.value = prod.name;
+      prodPrice.value = prod.price;
+      prodDate.value = prod.dateAdded;
+      prodSklad.value = prod.sklad;
+      formTitle.textContent = `Редагування товару (${prod.id})`;
+      cancelBtn.style.display = 'inline-flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    function resetForm() {
+      editMode = false;
+      editingProductId = null;
+      prodId.disabled = false;
+      form.reset();
+      formTitle.textContent = "Додати новий товар";
+      cancelBtn.style.display = 'none';
+      clearError();
+    }
+
+    cancelBtn.addEventListener('click', resetForm);
+
+    window.deleteProduct = function(id) {
+      if (confirm(`Ви дійсно бажаєте видалити товар ${id}?`)) {
+        products = products.filter(p => p.id !== id);
+        if (editMode && editingProductId === id) resetForm();
+        renderTable();
+      }
+    };
+
+    // Сортування (Варіант 9: Date Added, Sklad)
+    document.getElementById('sort-date-asc').addEventListener('click', () => {
+      products.sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded));
+      renderTable();
+    });
+
+    document.getElementById('sort-date-desc').addEventListener('click', () => {
+      products.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+      renderTable();
+    });
+
+    document.getElementById('sort-sklad-asc').addEventListener('click', () => {
+      products.sort((a, b) => a.sklad - b.sklad);
+      renderTable();
+    });
+
+    document.getElementById('sort-sklad-desc').addEventListener('click', () => {
+      products.sort((a, b) => b.sklad - a.sklad);
+      renderTable();
+    });
+
+    renderTable();
+  </script>
+</body>
+</html>
